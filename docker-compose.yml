@@ -19,7 +19,7 @@ services:
       - 8080 
       
   db:
-    image: postgres
+    image: postgis/postgis
     restart: always
     #TODO adicionar dados a partir de uma enviroment
     environment:
