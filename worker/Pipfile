@@ -4,11 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
-requests = "*"
-psycopg2-binary = "*"
 redis = "*"
-rq = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

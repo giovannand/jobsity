@@ -6,11 +6,10 @@ services:
     build: 
       context: ./api
     depends_on: 
-      - db
+      - redis
+    container_name: flask-api
     networks:
       - default
-    environment:
-      POSTGRES_PASSWORD: 'postgres_password'
     ports:
       - 8080:8080
     networks:
@@ -32,6 +31,32 @@ services:
     networks:
       - db_network
 
+  redis:
+    image: redis:6.2.6-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - db_network
+    volumes:
+      - ./redis:/redis
+
+  worker:
+    build: 
+      context: ./worker
+    depends_on: 
+      - db
+      - redis
+    networks:
+      - default
+    environment:
+      POSTGRES_PASSWORD: 'postgres_password'
+    ports:
+      - 8081:8080
+    networks:
+      - db_network
+    # expose:
+    #   - 8081 
+      
 
 networks:
   db_network:
