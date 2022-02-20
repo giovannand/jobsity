@@ -23,6 +23,7 @@ services:
       POSTGRES_PASSWORD: 'postgres_password'
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      #INFO volume commented for simplicity
       # - pgdata:/var/lib/postgresql/data
     ports:
       - 5405:5432
@@ -60,6 +61,16 @@ services:
       STATUS: 'Online'
     ports:
       - 8082:8080
+    networks:
+      - db_network
+
+  consumer:
+    build: 
+      context: ./user_consumer
+    depends_on: 
+      - worker
+    ports:
+      - 8083:8080
     networks:
       - db_network
 

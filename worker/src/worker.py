@@ -7,6 +7,7 @@ import time
 import redis
 
 REDIS_LIST="trips"
+REDIS_CHANNEL="trips"
 
 def get_trip(list):
     r = redis.Redis(host='redis', port=6379, db=0)
@@ -47,16 +48,30 @@ def insert_trip(trip_data):
             conn.close()
 
     return trips_id
+    
+def publish_message(message):
+    r = redis.Redis(host='redis', port=6379, db=0)
+    r.publish(REDIS_CHANNEL,message)
+
+def publish_trips_message(trips_id):
+    message=""
+    if trips_id != None: 
+        message += f"The message was saved. Trips Id: [{trips_id}] "
+    else:
+        message += f"We get an error to save the massage."
+    
+    publish_message(message)
 
 def save_trips():
     try:
-
         data = get_trip(REDIS_LIST)
         trip = json.loads(data)
         trips_id = insert_trip(trip)
-        print(f'Data war insert succesfully {trips_id}')
+        publish_trips_message(trips_id)
+
         return (f"Data was received. Trips id [{trips_id}] ", 201)
     except Exception as ex:
+
         return (ex, 500)
 
 while (True):
