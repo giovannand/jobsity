@@ -12,7 +12,6 @@ if STATUS=='Online':
     for i in df.index:
         data = df.loc[i].to_json()
         r = requests.post('http://api:8080/trips',data = data) 
-        time.sleep(0.5)
 
 
             
