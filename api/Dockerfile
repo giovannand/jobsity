@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --system --deploy --ignore-pipfile
-COPY ./src /app
+COPY . /app
 
-CMD [ "python", "api.py" ]
+CMD [ "python", "./src/api.py" ]
+
